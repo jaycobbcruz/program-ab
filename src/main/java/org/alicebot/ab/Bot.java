@@ -135,7 +135,11 @@ public class Bot {
         MagicStrings.pannous_login = Utilities.getPannousLogin();
         if (action.equals("aiml2csv")) addCategoriesFromAIML();
         else if (action.equals("csv2aiml")) addCategoriesFromAIMLIF();
-        else if (aimlDate.after(aimlIFDate)) {
+        else if (action.equals("reload")) {
+            addCategoriesFromAIML();
+            writeAIMLIFFiles();
+            addCategoriesFromAIMLIF();
+        } else if (aimlDate.after(aimlIFDate)) {
             log.info("AIML modified after AIMLIF");
             addCategoriesFromAIML();
             writeAIMLIFFiles();

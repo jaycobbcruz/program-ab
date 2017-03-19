@@ -1,25 +1,53 @@
 package org.alicebot.ab.utils;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.util.Enumeration;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.JsonObjectParser;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.URLEncoder;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Enumeration;
+
 
 public class NetworkUtils {
-	private static final Logger log = LoggerFactory
-			.getLogger(NetworkUtils.class);
+
+	private static final Logger log = LoggerFactory.getLogger(NetworkUtils.class);
+
+    static {
+        try {
+            trustEveryone();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private static final HttpTransport httpTransport = new NetHttpTransport();
+    private static final JsonFactory jsonFactory = new JacksonFactory();
+    public static HttpTransport getHttpTransport() {
+        return httpTransport;
+    }
+    public static JsonFactory getJsonFactory() {
+        return jsonFactory;
+    }
+
+    public static HttpRequestFactory getHttpRequestFactory() {
+        return getHttpTransport().createRequestFactory(request -> request.setParser(new JsonObjectParser(getJsonFactory())));
+    }
 
     public static String localIPAddress() {
         try {
@@ -42,21 +70,9 @@ public class NetworkUtils {
         return "127.0.0.1";
     }
 
-
 	public static String responseContent(String url) throws Exception {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet request = new HttpGet();
-		request.setURI(new URI(url));
-		InputStream is = client.execute(request).getEntity().getContent();
-		BufferedReader inb = new BufferedReader(new InputStreamReader(is));
-		StringBuilder sb = new StringBuilder("");
-		String line;
-		String NL = System.getProperty("line.separator");
-		while ((line = inb.readLine()) != null) {
-			sb.append(line).append(NL);
-		}
-		inb.close();
-		return sb.toString();
+        final HttpRequest request = getHttpRequestFactory().buildGetRequest(new GenericUrl(url));
+        return request.execute().parseAsString();
 	}
 
 
@@ -77,5 +93,23 @@ public class NetworkUtils {
 		return spec;
 	}
 
+    public static void trustEveryone() throws Exception {
+        try {
+            SSLContext ctx = SSLContext.getInstance("TLS");
+            X509TrustManager tm = new X509TrustManager() {
+                public void checkClientTrusted(X509Certificate[] xcs, String string) throws CertificateException {}
+                public void checkServerTrusted(X509Certificate[] xcs, String string) throws CertificateException {}
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+            };
+            ctx.init(null, new TrustManager[]{tm}, null);
+            SSLContext.setDefault(ctx);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> true);
+    }
 
 }
