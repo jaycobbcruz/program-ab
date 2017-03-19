@@ -7,3 +7,17 @@ target
 *.jar
 *.war
 *.ear
+/.idea/
+.idea/libraries/Maven__ch_qos_logback_logback_classic_1_0_13.xml
+.idea/libraries/Maven__ch_qos_logback_logback_core_1_0_13.xml
+.idea/libraries/Maven__commons_codec_commons_codec_1_6.xml
+.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml
+.idea/libraries/Maven__joda_time_joda_time_2_3.xml
+.idea/libraries/Maven__net_reduls_sanmoku_sanmoku_0_0_5.xml
+.idea/libraries/Maven__net_reduls_sanmoku_sanmoku_feature_ex_0_0_1.xml
+.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_2_5.xml
+.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_2_4.xml
+.idea/libraries/Maven__org_json_json_20090211.xml
+.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_5.xml
+.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_5.xml
+ab.iml
