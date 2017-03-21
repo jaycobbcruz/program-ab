@@ -11,9 +11,9 @@ public class Config {
 
     private static final Logger log = LoggerFactory.getLogger(Config.class);
 
-    private final Properties prop = new Properties();
+    private final static Properties prop = new Properties();
 
-    public Config() {
+    static {
         try (InputStream input = Config.class.getClassLoader().getResourceAsStream("application.properties")) {
             prop.load(input);
         } catch (IOException e) {
@@ -21,7 +21,7 @@ public class Config {
         }
     }
 
-    public String getProperty(final String key) {
+    public static String getProperty(final String key) {
         return prop.getProperty(key);
     }
 

@@ -1,10 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.alicebot.ab</groupId>
+	<groupId>org.alicebot</groupId>
 	<artifactId>ab</artifactId>
 	<version>1.0</version>
 	<name>Program AB</name>
+    <packaging>jar</packaging>
 	<description>Program AB is the reference implementation of the AIML 2.0 draft specification. AIML is a widely adopted standard for creating chat bots and mobile virtual assistants like ALICE, Mitsuku, English Tutor, The Professor, S.U.P.E.R. and many more.</description>
 	<properties>
 		<slf4j.version>1.7.5</slf4j.version>
@@ -24,7 +25,6 @@
 	    	<groupId>org.slf4j</groupId>
 	    	<artifactId>jcl-over-slf4j</artifactId>
 	    	<version>${slf4j.version}</version>
-	    	<scope>runtime</scope>
 	    </dependency>
 	    <dependency>
 	    	<groupId>ch.qos.logback</groupId>
@@ -47,16 +47,20 @@
 	    	<artifactId>json</artifactId>
 	    	<version>20090211</version>
 	    </dependency>
-	    <dependency>
-	    	<groupId>net.reduls.sanmoku</groupId>
-	    	<artifactId>sanmoku</artifactId>
-	    	<version>0.0.5</version>
-	    </dependency>
-	    <dependency>
-	    	<groupId>net.reduls.sanmoku</groupId>
-	    	<artifactId>sanmoku-feature-ex</artifactId>
-	    	<version>0.0.1</version>
-	    </dependency>
+        <dependency>
+            <groupId>net.reduls</groupId>
+            <artifactId>sanmoku</artifactId>
+            <version>0.0.5</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/sanmoku-0.0.5.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.reduls</groupId>
+            <artifactId>sanmoku-feature-ex</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/sanmoku-feature-ex-0.0.1.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client-servlet</artifactId>
@@ -74,8 +78,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>

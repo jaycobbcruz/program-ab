@@ -38,7 +38,7 @@ public class Main {
 
     public static void main(String[] args) {
         //MagicStrings.root_path = System.getProperty("user.dir");
-        MagicStrings.root_path = new Config().getProperty("ab.root.path");
+        MagicStrings.root_path = Config.getProperty("ab.root.path");
         log.info("Working Directory = " + MagicStrings.root_path);
         AIMLProcessor.extension = new PCAIMLProcessorExtension();
         mainFunction(args);

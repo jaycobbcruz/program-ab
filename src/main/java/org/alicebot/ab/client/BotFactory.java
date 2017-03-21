@@ -13,7 +13,7 @@ public class BotFactory {
 	private Map<String, Bot> bots = new HashMap<>();
 
     static {
-        MagicStrings.root_path = new Config().getProperty("ab.root.path");
+        MagicStrings.root_path = Config.getProperty("ab.root.path");
     }
 
 	public Bot get(String botName) {
